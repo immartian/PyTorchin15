@@ -70,6 +70,10 @@ clf = ImageClassifier().to('cpu')
 # Train the model
 train_model(clf, train_loader)
 
+# Save the trained model
+torch.save(clf.state_dict(), 'mnist_classifier.pth')
+print("Model saved as 'mnist_classifier.pth'")
+
 # 4. Noise Reduction and Preprocessing for Test Image
 def preprocess_image(image_path):
     # Load image using OpenCV
@@ -115,6 +119,11 @@ def test_model_on_image(model, image_path):
     plt.imshow(img_np, cmap='gray')
     plt.title(f"Predicted: {predicted.item()}, Confidence: {confidence}")
     plt.show()
+
+# Later: Load the saved model and test
+clf = ImageClassifier().to('cpu')
+clf.load_state_dict(torch.load('mnist_classifier.pth'))
+print("Model loaded for inference.")
 
 # Test the model on img_4.jpg (the noisy outlier)
 test_image_path = 'img_4.jpg'  # Path to the noisy image
